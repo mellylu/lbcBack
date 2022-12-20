@@ -88,7 +88,8 @@ exports.login = (req, res) => {
             )
             res.status(200).send({
                 auth: true,
-                token: userToken
+                token: userToken,
+                username: user.username
             })
         })
         .catch((err) => res.status(404).send({ error: `err : ${err}` }))
