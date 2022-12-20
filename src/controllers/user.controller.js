@@ -12,6 +12,7 @@ exports.register = (req, res) => {
     const user = new User({
         firstName : req.body.firstName,
         lastName : req.body.lastName,
+        username : req.body.username,
         email : req.body.email,
         isAdmin : false,
         password : hashedPassword
@@ -129,6 +130,7 @@ exports.update = (req, res) => {
     const user = User.findByIdAndUpdate(req.params.id, {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        username : req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, saltRounds),
         favoris: req.body.favoris

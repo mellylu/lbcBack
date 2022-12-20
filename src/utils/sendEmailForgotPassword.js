@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 require('dotenv').config()
 
 // async..await is not allowed in global scope, must use a wrapper
-exports.sendEmail = async(req, res, numberrandom, destinataire) => {
+exports.sendEmail = async(req, res, token, destinataire) => {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   let testAccount = await nodemailer.createTestAccount();
@@ -12,17 +12,15 @@ exports.sendEmail = async(req, res, numberrandom, destinataire) => {
     service: 'outlook',
     auth: {
       user: "thibault2399@hotmail.fr", // generated ethereal user
-      pass: "535e8d854eaf", // generated ethereal password
+      pass: process.env.PASSWORD, // generated ethereal password
     },
   });
-  
-
   let infoMail = {
     from: "thibault2399@hotmail.fr", // sender address
     to: destinataire, // list of receivers
-    subject: "Votre code de vérification leboncoin", // Subject line
+    subject: "Reset mot de passe", // Subject line
     text: "Hello world?", // plain text body
-    html: `<h1>Créer un compte</h1><Br /><p>Bonjour,</p><Br /><p>Vous avez initié une demande de création de compte leboncoin. Afin de confirmer votre identité, veuillez entrez le code suivant sur le boncoin : </p><Br/><h1>${numberrandom}</h1>><Br /><p><B>A tout de suite sur leboncoin</B></p>`
+    html: `Cliquer sur ce lien : <a href='http://localhost:3000/auth/resetpassword?token=${token.token}'>reset password</a>`
   };
 
 
