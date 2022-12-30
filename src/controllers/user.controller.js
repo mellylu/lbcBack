@@ -89,7 +89,8 @@ exports.login = (req, res) => {
             res.status(200).send({
                 auth: true,
                 token: userToken,
-                username: user.username
+                username: user.username,
+                id: user._id,
             })
         })
         .catch((err) => res.status(404).send({ error: `err : ${err}` }))
@@ -133,8 +134,7 @@ exports.update = (req, res) => {
         lastName: req.body.lastName,
         username : req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, saltRounds),
-        favoris: req.body.favoris
+        //password: bcrypt.hashSync(req.body.password, saltRounds),
     })
         .then(() => {
             User.findById(req.params.id)
