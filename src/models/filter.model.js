@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const toolsAdSchema = new Schema({
+const filterSchema = new Schema({
     category: {
-        type: Array,
+        type: String,
     },
     univers: {
+        type: Array,
+    },
+    size: {
         type: Array,
     },
     type:{
@@ -25,4 +28,4 @@ const toolsAdSchema = new Schema({
     },
 });
 
-module.exports = mongoose.model('ToolsAd', toolsAdSchema);
+module.exports = mongoose.model('Filter', filterSchema);

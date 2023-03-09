@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 var secret = process.env.JWT_SECRET;
 
 const sendEmail = require("../utils/sendEmailForVerifyEmail")
+const sendMessage = require ("../utils/sendMessage")
 
 //Register
 exports.register = (req, res) => {
@@ -115,6 +116,13 @@ exports.getAll = (req, res) => {
 //GET ID
 exports.getId = (req, res) => {
     const user = User.findById(req.params.id)
+    .populate({
+        path:"announcement",
+        populate:{
+            path:"ad",
+            model:"Ad"
+        }
+    })
         .then((data) => {
             res.send({
                 user: data
@@ -134,10 +142,18 @@ exports.update = (req, res) => {
         lastName: req.body.lastName,
         username : req.body.username,
         email: req.body.email,
+        announcement: req.body.announcement,
         //password: bcrypt.hashSync(req.body.password, saltRounds),
     })
         .then(() => {
             User.findById(req.params.id)
+            .populate({
+                path:"announcement",
+                populate:{
+                    path:"ad",
+                    model:"Ad"
+                }
+            })
                 .then((data) => {
                     res.send({
                         user: data,
@@ -184,5 +200,19 @@ exports.verifyemail = (req, res) => {
         })
         .catch((err)=> {res.status(500).json({ message: err})})
         
+    }
+}
+
+exports.verifyphone = (req, res) => {
+    if (req.body.phone) {
+        min = Math.ceil(1);
+        max = Math.floor(99999);
+        numberrandom = Math.floor(Math.random() * (max - min)) + min;
+        console.log("1111111")
+        sendMessage.sendMessage(req, res, numberrandom, req.body.phone)
+        .then((data) => {
+            res.status(200).json({ message: 'ok', number : numberrandom})
+        })
+        .catch((err)=> {res.status(500).json({ message: err})})
     }
 }

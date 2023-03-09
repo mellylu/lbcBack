@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Ad = require('./ad.model');
 
 const userSchema = new Schema({
     firstName: {
@@ -23,7 +24,15 @@ const userSchema = new Schema({
     },
     isAdmin: {
         type: Boolean,
-    } 
+    },
+    announcement:[
+        {
+            ad: {
+                type: Schema.Types.ObjectId,
+                ref: Ad
+            }
+        }
+    ] 
 });
 
 module.exports = mongoose.model('User', userSchema);

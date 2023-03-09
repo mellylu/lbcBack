@@ -12,6 +12,7 @@ router.post('/emailexist', userController.emailexist);
 router.put('/:id', userController.update);
 router.delete('/:id', userController.delete);
 router.post("/verifyemail", userController.verifyemail);
+router.post("/verifyphone", userController.verifyphone);
 
 
 module.exports = router;
