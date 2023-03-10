@@ -12,7 +12,9 @@ exports.post = (req, res) => {
         state : req.body.state,
         description : req.body.description,
         price : req.body.price,
-        image : req.body.image
+        image : req.body.image,
+        localization: req.body.localization,
+        date: Date.now()
     });
     ad.save()
         .then((data) => {
@@ -73,7 +75,9 @@ exports.update = (req, res) => {
         state : req.body.state,
         description : req.body.description,
         price : req.body.price,
-        image : req.body.image
+        image : req.body.image,
+        localization: req.body.localization,
+        date: Date.now()
     })
     .then(() => {
         Ad.findById(req.params.id)
