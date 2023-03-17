@@ -5,7 +5,6 @@ const multer = require('multer')
 var upload = multer()
 
 router.post('/uploadfile', upload.single("file"), uploadController.uploadFile);
-// router.post('/uploadfile', upload.array("image"), uploadController.uploadFile);
-
+router.delete('/annonces/:id', uploadController.deleteFile);
 
 module.exports = router;
