@@ -13,6 +13,8 @@ router.put('/:id', userController.update);
 router.delete('/:id', userController.delete);
 router.post("/verifyemail", userController.verifyemail);
 router.post("/verifyphone", userController.verifyphone);
+router.delete('/deleteAnnouncement/:idUser/:idAd', userController.deleteAnnouncement);
+router.delete('/deleteFavoris/:idUser/:idAd', userController.deleteFavoris);
 
 
 module.exports = router;

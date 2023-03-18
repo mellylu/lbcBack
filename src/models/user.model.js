@@ -32,7 +32,15 @@ const userSchema = new Schema({
                 ref: Ad
             }
         }
-    ] 
+    ],
+    favorite:[
+        {
+            ad: {
+                type: Schema.Types.ObjectId,
+                ref: Ad
+            }
+        }
+    ]
 });
 
 module.exports = mongoose.model('User', userSchema);

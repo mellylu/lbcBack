@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 var secret = process.env.JWT_SECRET;
 
 const sendEmail = require("../utils/sendEmailForVerifyEmail")
-const sendMessage = require ("../utils/sendMessage")
+const sendMessage = require ("../utils/sendMessage");
+const { json } = require("body-parser");
 
 //Register
 exports.register = (req, res) => {
@@ -123,6 +124,13 @@ exports.getId = (req, res) => {
             model:"Ad"
         }
     })
+    .populate({
+        path:"favorite",
+            populate:{
+                path:"ad",
+                model:"Ad"
+            }
+    })
         .then((data) => {
             res.send({
                 user: data
@@ -143,12 +151,20 @@ exports.update = (req, res) => {
         username : req.body.username,
         email: req.body.email,
         announcement: req.body.announcement,
+        favorite: req.body.favorite,
         //password: bcrypt.hashSync(req.body.password, saltRounds),
     })
         .then(() => {
             User.findById(req.params.id)
             .populate({
                 path:"announcement",
+                populate:{
+                    path:"ad",
+                    model:"Ad"
+                }
+            })
+            .populate({
+                path:"favorite",
                 populate:{
                     path:"ad",
                     model:"Ad"
@@ -182,6 +198,67 @@ exports.delete = (req, res) => {
             })
         })
 }
+
+//DELETEANNOUNCEMENT
+exports.deleteAnnouncement = (req, res) => {
+   const user = User.findById(req.params.idUser)
+   user
+   .then((data) => {
+        data.announcement = data.announcement.filter((x) =>
+            x._id.toString() !== req.params.idAd,
+        )
+        User.findByIdAndUpdate(req.params.idUser, {
+            announcement : data.announcement
+        })
+        .then(()=> {
+            res.send({
+                delete: true
+            })
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message : err.message || "Some error occured"
+            })
+        })
+        
+        })//http://localhost:5000/api/v1/users/6412e513a64ab4bc96934483/6412e575a64ab4bc9693448d
+    .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occured"
+            })
+        })
+}
+
+//DELETEFAVORIS
+exports.deleteFavoris = (req, res) => {
+    const user = User.findById(req.params.idUser)
+    user
+    .then((data) => {
+         data.favoris = data.favoris.filter((x) =>
+             x._id.toString() !== req.params.idAd,
+         )
+         User.findByIdAndUpdate(req.params.idUser, {
+             favoris : data.favoris
+         })
+         .then(()=> {
+             res.send({
+                 delete: true
+             })
+         })
+         .catch((err) => {
+             res.status(500).send({
+                 message : err.message || "Some error occured"
+             })
+         })
+         
+         })//http://localhost:5000/api/v1/users/6412e513a64ab4bc96934483/6412e575a64ab4bc9693448d
+     .catch((err) => {
+             res.status(500).send({
+                 message: err.message || "Some error occured"
+             })
+         })
+ }
+
 
 exports.verifyToken = (req, res) => {
     if (req.user) {
