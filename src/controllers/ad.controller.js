@@ -33,19 +33,36 @@ exports.post = (req, res) => {
 
 //GET ALL
 exports.getAll = (req, res) => {
-    const ad = Ad.find()
-    .then((data) => {
-        res.send({
-            ad : data
+    const page = parseInt(req.query.page);
+    const limit = 5;
+    let total = null;
+    Ad.find().then((data)=> {
+        total = data.length / 5 - 1
+        let ad = Ad.find();
+        if (req.query.page){
+            ad = ad.skip(page * limit).limit(limit)
+        }
+        if (req.query.sort){
+            var sort = { [req.query.sort]: 1 };
+            ad = ad.sort(sort)
+        }
+        ad
+        .then((data) => {
+            res.send({
+                total : total,
+                ad : data
+            })
+        })
+        .catch((err) => {
+            res.status(500).send({
+                error: 500,
+                message: err.message
+            })
         })
     })
-    .catch((err) => {
-        res.status(500).send({
-            error: 500,
-            message: err.message
-        })
-    })
+    
 }
+
 
 //GET ID
 exports.getId = (req, res) => {
