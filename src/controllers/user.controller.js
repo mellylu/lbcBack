@@ -152,6 +152,7 @@ exports.update = (req, res) => {
         email: req.body.email,
         announcement: req.body.announcement,
         favorite: req.body.favorite,
+        image: req.body.image,
         //password: bcrypt.hashSync(req.body.password, saltRounds),
     })
         .then(() => {

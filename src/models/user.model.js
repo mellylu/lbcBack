@@ -22,6 +22,9 @@ const userSchema = new Schema({
         match: [/\S+@\S+\.\S+/, 'is invalid'],
         unique: true,
     },
+    image: {
+        type: String
+    },
     isAdmin: {
         type: Boolean,
     },
