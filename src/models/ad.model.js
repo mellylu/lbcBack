@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const User = require('./user.model');
 
 const adSchema = new Schema({
     name: {
@@ -38,7 +39,16 @@ const adSchema = new Schema({
     },
     image: {
         type: String,
-    }
+    },
+    userad:[
+        {
+            user: {
+                type: Schema.Types.ObjectId,
+                ref: () => User
+            }
+        }
+    ],
+    
 });
 
 module.exports = mongoose.model('Ad', adSchema);

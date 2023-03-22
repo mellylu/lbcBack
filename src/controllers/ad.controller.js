@@ -14,6 +14,7 @@ exports.post = (req, res) => {
         price : req.body.price,
         image : req.body.image,
         localization: req.body.localization,
+        userad: req.body.userad,
         date: Date.now()
     });
     ad.save()
@@ -67,6 +68,13 @@ exports.getAll = (req, res) => {
 //GET ID
 exports.getId = (req, res) => {
     const ad = Ad.findById(req.params.id)
+    .populate({
+        path:"userad",
+        populate:{
+            path:"user",
+            model:"User"
+        }
+    })
     .then((data) => {
         res.send({
             ad : data
@@ -94,10 +102,18 @@ exports.update = (req, res) => {
         price : req.body.price,
         image : req.body.image,
         localization: req.body.localization,
+        userad: req.body.userad,
         date: Date.now()
     })
     .then(() => {
         Ad.findById(req.params.id)
+            .populate({
+                path:"userad",
+                populate:{
+                    path:"user",
+                    model:"User"
+                }
+            })
             .then((data) => {
                 res.send({
                     ad : data,
