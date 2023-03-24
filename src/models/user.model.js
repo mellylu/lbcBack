@@ -43,6 +43,13 @@ const userSchema = new Schema({
                 ref: Ad
             }
         }
+    ],
+    recentSearch:[
+        {
+            category: {type : String},
+            search: {type : String},
+            localization: {type: Object}
+        }
     ]
 });
 

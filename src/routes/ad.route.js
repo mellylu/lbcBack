@@ -6,6 +6,7 @@ const adController = require('../controllers/ad.controller')
 // router.get('/', adController.getAll);
 router.get('/', adController.getAll);
 router.post('/', adController.post);
+router.post('/getallfilter', adController.getAllFilter);
 router.get('/:id', adController.getId);
 router.put('/:id', adController.update);
 router.delete('/:id', adController.delete);

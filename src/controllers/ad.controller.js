@@ -15,6 +15,7 @@ exports.post = (req, res) => {
         image : req.body.image,
         localization: req.body.localization,
         userad: req.body.userad,
+        country: req.body.country,
         date: Date.now()
     });
     ad.save()
@@ -40,12 +41,16 @@ exports.getAll = (req, res) => {
     Ad.find().then((data)=> {
         total = data.length / 5 - 1
         let ad = Ad.find();
-        if (req.query.page){
-            ad = ad.skip(page * limit).limit(limit)
-        }
+        // if(req.query.filter){
+        //     console.log(data)
+        // }
+        
         if (req.query.sort){
             var sort = { [req.query.sort]: 1 };
             ad = ad.sort(sort)
+        }
+        if (req.query.page){
+            ad = ad.skip(page * limit).limit(limit)
         }
         ad
         .then((data) => {
@@ -62,6 +67,47 @@ exports.getAll = (req, res) => {
         })
     })
     
+}
+
+exports.getAllFilter = (req, res) => {
+
+    Ad.find().then((data)=> {
+        if(req.query.category){
+            console.log("dans category")
+            data = data.filter( (element) => element.category === req.query.category );
+        }
+        console.log(data)
+        if (req.query.search){
+            console.log("dans search")
+            data = data.filter( (element) => element.name.includes(req.query.search) );
+        }
+        if (req.body.lat){
+            console.log("dans localization")
+            // data = data.filter( (element) => element.localization.lat > 0 && element.localization.lng < 0 );
+            const v = []
+            data = data.filter( (element) => {
+                // console.log(element.localization)
+                // console.log(req.body)
+                if(element.localization.lat === req.body.lat && element.localization.lng === req.body.lng)
+                {
+                    // console.log(element)
+                    v.push(element)
+                }
+                element.localization.lat === req.body.lat && element.localization.lng === req.body.lng
+            });
+            data = v
+        }
+        res.status(200).send({
+            ad :data
+        })
+        
+    })
+    .catch((err)=>{
+        res.status(500).send({
+            error:500,
+            message: err.message
+        })
+    })
 }
 
 
@@ -103,6 +149,7 @@ exports.update = (req, res) => {
         image : req.body.image,
         localization: req.body.localization,
         userad: req.body.userad,
+        country: req.body.country,
         date: Date.now()
     })
     .then(() => {

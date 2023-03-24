@@ -6,7 +6,7 @@ var secret = process.env.JWT_SECRET;
 
 const sendEmail = require("../utils/sendEmailForVerifyEmail")
 const sendMessage = require ("../utils/sendMessage");
-const { json } = require("body-parser");
+
 
 //Register
 exports.register = (req, res) => {
@@ -93,6 +93,7 @@ exports.login = (req, res) => {
                 token: userToken,
                 username: user.username,
                 id: user._id,
+                image: user.image,
             })
         })
         .catch((err) => res.status(404).send({ error: `err : ${err}` }))
@@ -153,6 +154,7 @@ exports.update = (req, res) => {
         announcement: req.body.announcement,
         favorite: req.body.favorite,
         image: req.body.image,
+        recentSearch: req.body.recentSearch,
         //password: bcrypt.hashSync(req.body.password, saltRounds),
     })
         .then(() => {
