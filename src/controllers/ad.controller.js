@@ -70,30 +70,34 @@ exports.getAll = (req, res) => {
 }
 
 exports.getAllFilter = (req, res) => {
-
+    console.log(req.query)
+    let total = null
     Ad.find().then((data)=> {
+        total = data.length / 5 - 1
         if(req.query.category){
-            console.log("dans category")
             data = data.filter( (element) => element.category === req.query.category );
-            console.log(data, "data")
         }
-        console.log(data)
         if (req.query.search){
-            console.log("dans search")
             data = data.filter( (element) => element.name.includes(req.query.search) );
         }
         if (req.query.lat && req.query.lng){
             const v = []
             data = data.filter( (element) => {
+                req.query.lat=Number(req.query.lat)
+                req.query.lng=Number(req.query.lng)
                 if(element.localization.lat === req.query.lat && element.localization.lng === req.query.lng)
                 {
-                    // console.log(element)
                     v.push(element)
                 }
                 element.localization.lat === req.body.lat && element.localization.lng === req.body.lng
             });
             data = v
         }
+        if (req.query.sort){
+            sort = req.query.sort
+            data = data.sort((a, b) => (a[sort] > b[sort] ? 1 : -1))
+        }
+        
         // if (req.body.lat){
         //     console.log("dans localization")
         //     const v = []
