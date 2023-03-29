@@ -71,7 +71,7 @@ exports.getAll = (req, res) => {
 
 exports.getAllFilter = (req, res) => {
     Ad.find().then((data)=> {
-        console.log(data)
+        
         total = data.length / 5 - 1
         if(req.query.category){
             data = data.filter( (element) => element.category === req.query.category );
@@ -102,20 +102,21 @@ exports.getAllFilter = (req, res) => {
         let bottom = false
         req.query.page=Number(req.query.page)
         req.query.page = req.query.page * 3
-        console.log(req.query.page)
-        console.log(nb + req.query.page -1)
         if (nb + req.query.page >= data.length){
             top = true
         }
         if (req.query.page === 0){
             bottom = true
         }
+        
         for(let i = req.query.page; i < nb + req.query.page; i++){
             if(i<data.length){
                 b.push(data[i])
             }
         }
         data = b
+        
+        
        
         res.status(200).send({
             ad :data,
