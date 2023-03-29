@@ -54,6 +54,9 @@ const adSchema = new Schema({
             }
         }
     ],
+    date: {
+        type: String,
+    }
     
 });
 

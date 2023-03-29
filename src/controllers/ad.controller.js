@@ -2,6 +2,9 @@ const { EventListInstance } = require("twilio/lib/rest/api/v2010/account/call/ev
 const Ad = require("../models/ad.model");
 
 exports.post = (req, res) => {
+    let today = new Date()
+    let dateToday = `${today.getDate()}/${today.getMonth()}/${today.getFullYear()} à ${today.getHours()}:${today.getMinutes()}`
+    dateToday = dateToday.toString()
     const ad = new Ad({
         name : req.body.name,
         category : req.body.category,
@@ -17,7 +20,7 @@ exports.post = (req, res) => {
         localization: req.body.localization,
         userad: req.body.userad,
         country: req.body.country,
-        date: Date.now()
+        date: dateToday,
     });
     ad.save()
         .then((data) => {
@@ -36,9 +39,6 @@ exports.post = (req, res) => {
 
 //GET ALL
 exports.getAll = (req, res) => {
-    const page = parseInt(req.query.page);
-    const limit = 5;
-    let total = null;
     Ad.find().then((data)=> {
         total = data.length / 5 - 1
         let ad = Ad.find();
@@ -52,7 +52,6 @@ exports.getAll = (req, res) => {
         ad
         .then((data) => {
             res.send({
-                total : total,
                 ad : data
             })
         })
@@ -93,8 +92,46 @@ exports.getAllFilter = (req, res) => {
             sort = req.query.sort
             data = data.sort((a, b) => (a[sort] > b[sort] ? 1 : -1))
         }
+        if (req.query.univers){
+            let tabUnivers = req.query.univers.split(",")
+            if (tabUnivers.length === 1){
+                data = data.filter( (element) => element.univers === req.query.univers );
+            }
+            else {
+                let tabfiltre = []
+                tabUnivers.forEach(el => {
+                   data.filter( (element) => 
+                        {
+                            if (element.univers === el){
+                                tabfiltre.push(element)
+                            }
+                        })
+                });
+                data = tabfiltre
+                
+            }
+        }
+        if (req.query.size){
+            let tabSize = req.query.size.split(",")
+            if (tabSize.length === 1){
+                data = data.filter( (element) => element.size === req.query.size );
+            }
+            else {
+                let tabfiltre = []
+                tabSize.forEach(el => {
+                   data.filter( (element) => 
+                        {
+                            if (element.size === el){
+                                tabfiltre.push(element)
+                            }
+                        })
+                });
+                data = tabfiltre
+                
+            }
+        }
         if (req.query.type){
-            tabType = req.query.type.split(",")
+            let tabType = req.query.type.split(",")
             if (tabType.length === 1){
                 data = data.filter( (element) => element.type === req.query.type );
             }
@@ -112,12 +149,88 @@ exports.getAllFilter = (req, res) => {
                 
             }
         }
+        if (req.query.brand){
+            let tabBrand = req.query.brand.split(",")
+            if (tabBrand.length === 1){
+                data = data.filter( (element) => element.brand === req.query.brand );
+            }
+            else {
+                let tabfiltre = []
+                tabBrand.forEach(el => {
+                   data.filter( (element) => 
+                        {
+                            if (element.brand === el){
+                                tabfiltre.push(element)
+                            }
+                        })
+                });
+                data = tabfiltre
+                
+            }
+        }
+        if (req.query.material){
+            let tabMaterial = req.query.material.split(",")
+            if (tabMaterial.length === 1){
+                data = data.filter( (element) => element.material === req.query.material );
+            }
+            else {
+                let tabfiltre = []
+                tabMaterial.forEach(el => {
+                   data.filter( (element) => 
+                        {
+                            if (element.material === el){
+                                tabfiltre.push(element)
+                            }
+                        })
+                });
+                data = tabfiltre
+                
+            }
+        }
+        if (req.query.color){
+            let tabColor = req.query.color.split(",")
+            if (tabColor.length === 1){
+                data = data.filter( (element) => element.color === req.query.color );
+            }
+            else {
+                let tabfiltre = []
+                tabColor.forEach(el => {
+                   data.filter( (element) => 
+                        {
+                            if (element.color === el){
+                                tabfiltre.push(element)
+                            }
+                        })
+                });
+                data = tabfiltre
+                
+            }
+        }
+        if (req.query.state){
+            let tabState = req.query.state.split(",")
+            if (tabState.length === 1){
+                data = data.filter( (element) => element.state === req.query.state );
+            }
+            else {
+                let tabfiltre = []
+                tabState.forEach(el => {
+                   data.filter( (element) => 
+                        {
+                            if (element.state === el){
+                                tabfiltre.push(element)
+                            }
+                        })
+                });
+                data = tabfiltre
+                
+            }
+        }
         let b = []
-        let nb = 3
+        let nb = 5
         let top = false
         let bottom = false
         req.query.page=Number(req.query.page)
-        req.query.page = req.query.page * 3
+        req.query.page = req.query.page * 5
         if (nb + req.query.page >= data.length){
             top = true
         }
