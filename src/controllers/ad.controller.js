@@ -1,3 +1,4 @@
+const { EventListInstance } = require("twilio/lib/rest/api/v2010/account/call/event");
 const Ad = require("../models/ad.model");
 
 exports.post = (req, res) => {
@@ -41,10 +42,6 @@ exports.getAll = (req, res) => {
     Ad.find().then((data)=> {
         total = data.length / 5 - 1
         let ad = Ad.find();
-        // if(req.query.filter){
-        //     console.log(data)
-        // }
-        
         if (req.query.sort){
             var sort = { [req.query.sort]: 1 };
             ad = ad.sort(sort)
@@ -95,6 +92,25 @@ exports.getAllFilter = (req, res) => {
         if (req.query.sort){
             sort = req.query.sort
             data = data.sort((a, b) => (a[sort] > b[sort] ? 1 : -1))
+        }
+        if (req.query.type){
+            tabType = req.query.type.split(",")
+            if (tabType.length === 1){
+                data = data.filter( (element) => element.type === req.query.type );
+            }
+            else {
+                let tabfiltre = []
+                tabType.forEach(el => {
+                   data.filter( (element) => 
+                        {
+                            if (element.type === el){
+                                tabfiltre.push(element)
+                            }
+                        })
+                });
+                data = tabfiltre
+                
+            }
         }
         let b = []
         let nb = 3
