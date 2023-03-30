@@ -92,44 +92,44 @@ exports.getAllFilter = (req, res) => {
             sort = req.query.sort
             data = data.sort((a, b) => (a[sort] > b[sort] ? 1 : -1))
         }
-        if (req.query.univers){
-            let tabUnivers = req.query.univers.split(",")
-            if (tabUnivers.length === 1){
-                data = data.filter( (element) => element.univers === req.query.univers );
-            }
-            else {
-                let tabfiltre = []
-                tabUnivers.forEach(el => {
-                   data.filter( (element) => 
-                        {
-                            if (element.univers === el){
-                                tabfiltre.push(element)
-                            }
-                        })
-                });
-                data = tabfiltre
+        // if (req.query.univers){
+        //     let tabUnivers = req.query.univers.split(",")
+        //     if (tabUnivers.length === 1){
+        //         data = data.filter( (element) => element.univers === req.query.univers );
+        //     }
+        //     else {
+        //         let tabfiltre = []
+        //         tabUnivers.forEach(el => {
+        //            data.filter( (element) => 
+        //                 {
+        //                     if (element.univers === el){
+        //                         tabfiltre.push(element)
+        //                     }
+        //                 })
+        //         });
+        //         data = tabfiltre
                 
-            }
-        }
-        if (req.query.size){
-            let tabSize = req.query.size.split(",")
-            if (tabSize.length === 1){
-                data = data.filter( (element) => element.size === req.query.size );
-            }
-            else {
-                let tabfiltre = []
-                tabSize.forEach(el => {
-                   data.filter( (element) => 
-                        {
-                            if (element.size === el){
-                                tabfiltre.push(element)
-                            }
-                        })
-                });
-                data = tabfiltre
+        //     }
+        // }
+        // if (req.query.size){
+        //     let tabSize = req.query.size.split(",")
+        //     if (tabSize.length === 1){
+        //         data = data.filter( (element) => element.size === req.query.size );
+        //     }
+        //     else {
+        //         let tabfiltre = []
+        //         tabSize.forEach(el => {
+        //            data.filter( (element) => 
+        //                 {
+        //                     if (element.size === el){
+        //                         tabfiltre.push(element)
+        //                     }
+        //                 })
+        //         });
+        //         data = tabfiltre
                 
-            }
-        }
+        //     }
+        // }
         if (req.query.type){
             let tabType = req.query.type.split(",")
             if (tabType.length === 1){
@@ -149,82 +149,82 @@ exports.getAllFilter = (req, res) => {
                 
             }
         }
-        if (req.query.brand){
-            let tabBrand = req.query.brand.split(",")
-            if (tabBrand.length === 1){
-                data = data.filter( (element) => element.brand === req.query.brand );
-            }
-            else {
-                let tabfiltre = []
-                tabBrand.forEach(el => {
-                   data.filter( (element) => 
-                        {
-                            if (element.brand === el){
-                                tabfiltre.push(element)
-                            }
-                        })
-                });
-                data = tabfiltre
+        // if (req.query.brand){
+        //     let tabBrand = req.query.brand.split(",")
+        //     if (tabBrand.length === 1){
+        //         data = data.filter( (element) => element.brand === req.query.brand );
+        //     }
+        //     else {
+        //         let tabfiltre = []
+        //         tabBrand.forEach(el => {
+        //            data.filter( (element) => 
+        //                 {
+        //                     if (element.brand === el){
+        //                         tabfiltre.push(element)
+        //                     }
+        //                 })
+        //         });
+        //         data = tabfiltre
                 
-            }
-        }
-        if (req.query.material){
-            let tabMaterial = req.query.material.split(",")
-            if (tabMaterial.length === 1){
-                data = data.filter( (element) => element.material === req.query.material );
-            }
-            else {
-                let tabfiltre = []
-                tabMaterial.forEach(el => {
-                   data.filter( (element) => 
-                        {
-                            if (element.material === el){
-                                tabfiltre.push(element)
-                            }
-                        })
-                });
-                data = tabfiltre
+        //     }
+        // }
+        // if (req.query.material){
+        //     let tabMaterial = req.query.material.split(",")
+        //     if (tabMaterial.length === 1){
+        //         data = data.filter( (element) => element.material === req.query.material );
+        //     }
+        //     else {
+        //         let tabfiltre = []
+        //         tabMaterial.forEach(el => {
+        //            data.filter( (element) => 
+        //                 {
+        //                     if (element.material === el){
+        //                         tabfiltre.push(element)
+        //                     }
+        //                 })
+        //         });
+        //         data = tabfiltre
                 
-            }
-        }
-        if (req.query.color){
-            let tabColor = req.query.color.split(",")
-            if (tabColor.length === 1){
-                data = data.filter( (element) => element.color === req.query.color );
-            }
-            else {
-                let tabfiltre = []
-                tabColor.forEach(el => {
-                   data.filter( (element) => 
-                        {
-                            if (element.color === el){
-                                tabfiltre.push(element)
-                            }
-                        })
-                });
-                data = tabfiltre
+        //     }
+        // }
+        // if (req.query.color){
+        //     let tabColor = req.query.color.split(",")
+        //     if (tabColor.length === 1){
+        //         data = data.filter( (element) => element.color === req.query.color );
+        //     }
+        //     else {
+        //         let tabfiltre = []
+        //         tabColor.forEach(el => {
+        //            data.filter( (element) => 
+        //                 {
+        //                     if (element.color === el){
+        //                         tabfiltre.push(element)
+        //                     }
+        //                 })
+        //         });
+        //         data = tabfiltre
                 
-            }
-        }
-        if (req.query.state){
-            let tabState = req.query.state.split(",")
-            if (tabState.length === 1){
-                data = data.filter( (element) => element.state === req.query.state );
-            }
-            else {
-                let tabfiltre = []
-                tabState.forEach(el => {
-                   data.filter( (element) => 
-                        {
-                            if (element.state === el){
-                                tabfiltre.push(element)
-                            }
-                        })
-                });
-                data = tabfiltre
+        //     }
+        // }
+        // if (req.query.state){
+        //     let tabState = req.query.state.split(",")
+        //     if (tabState.length === 1){
+        //         data = data.filter( (element) => element.state === req.query.state );
+        //     }
+        //     else {
+        //         let tabfiltre = []
+        //         tabState.forEach(el => {
+        //            data.filter( (element) => 
+        //                 {
+        //                     if (element.state === el){
+        //                         tabfiltre.push(element)
+        //                     }
+        //                 })
+        //         });
+        //         data = tabfiltre
                 
-            }
-        }
+        //     }
+        // }
         let b = []
         let nb = 5
         let top = false
@@ -245,8 +245,6 @@ exports.getAllFilter = (req, res) => {
         }
         data = b
         
-        
-       
         res.status(200).send({
             ad :data,
             top : top,
