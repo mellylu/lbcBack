@@ -149,6 +149,25 @@ exports.getAllFilter = (req, res) => {
                 
             }
         }
+        if (req.query.material){
+            let tabMaterial = req.query.material.split(",")
+            if (tabMaterial.length === 1){
+                data = data.filter( (element) => element.material === req.query.material );
+            }
+            else {
+                let tabfiltre = []
+                tabMaterial.forEach(el => {
+                   data.filter( (element) => 
+                        {
+                            if (element.material === el){
+                                tabfiltre.push(element)
+                            }
+                        })
+                });
+                data = tabfiltre
+                
+            }
+        }
         // if (req.query.brand){
         //     let tabBrand = req.query.brand.split(",")
         //     if (tabBrand.length === 1){
@@ -168,25 +187,7 @@ exports.getAllFilter = (req, res) => {
                 
         //     }
         // }
-        // if (req.query.material){
-        //     let tabMaterial = req.query.material.split(",")
-        //     if (tabMaterial.length === 1){
-        //         data = data.filter( (element) => element.material === req.query.material );
-        //     }
-        //     else {
-        //         let tabfiltre = []
-        //         tabMaterial.forEach(el => {
-        //            data.filter( (element) => 
-        //                 {
-        //                     if (element.material === el){
-        //                         tabfiltre.push(element)
-        //                     }
-        //                 })
-        //         });
-        //         data = tabfiltre
-                
-        //     }
-        // }
+        
         // if (req.query.color){
         //     let tabColor = req.query.color.split(",")
         //     if (tabColor.length === 1){

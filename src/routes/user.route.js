@@ -4,8 +4,8 @@ const userController = require('../controllers/user.controller')
 const verifyToken = require("../helpers/verifyToken")
 
 router.get('/', userController.getAll);
-router.get('/:id', verifyToken, userController.getId);
-router.get('/verifytoken', userController.verifyToken);
+router.get('/verifyToken', userController.verifyToken);
+router.get('/:id', userController.getId);
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.post('/emailexist', userController.emailexist);

@@ -2,7 +2,7 @@
 //middleware : une fonction que tu places au milieur de deux opérations
 const jwt = require ('jsonwebtoken');
 
-function verifyToken (req, res, next) {  //fonction réutilisable, peut agir en tant que controller
+exports.verifyToken = (req, res) => {  //fonction réutilisable, peut agir en tant que controller
     let token = req.headers.authorization//récupérer le token qui est dans le header de la requête dans le libellé authorization
     console.log(token);
     if (!token) { // est ce que on a un token, si il est bon ou pas
@@ -23,9 +23,13 @@ function verifyToken (req, res, next) {  //fonction réutilisable, peut agir en 
                 message : "not authorized"
             })
         }
-        req.user = jwtdecoded//rajouter dans ma requête une propriété user et à l'intérieur je mets le jwtdecoded
-        next(); // passe à l'exécution suivante
-        })
+        else{
+            return res.status().send({
+                auth : true,
+                token : token,
+                message : "authorized"
+            })
+        }
+        
+})
 }
-
-module.exports = verifyToken;
