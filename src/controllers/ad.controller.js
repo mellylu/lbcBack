@@ -3,8 +3,27 @@ const Ad = require("../models/ad.model");
 
 exports.post = (req, res) => {
     let today = new Date()
-    let dateToday = `${today.getDate()}/${today.getMonth()}/${today.getFullYear()} à ${today.getHours()}:${today.getMinutes()}`
-    dateToday = dateToday.toString()
+    let todayGetDate = ""
+    let todayGetMonth = ""
+    let todayGetFullYear = ""
+    let todayGetHours = ""
+    let todayGetMinutes = ""
+    if (today.getDate().toString().length === 1){
+        todayGetDate = `0${today.getDate().toString()}`
+    }
+    else{
+        todayGetDate = today.getDate().toString()
+    }
+    if (today.getMonth().toString().length === 1){
+        todayGetMonth = `0${today.getMonth().toString()}`
+    }
+    else{
+        todayGetMonth = today.getMonth().toString()
+    }
+    todayGetFullYear = today.getFullYear().toString()
+    todayGetHours = today.getHours().toString()
+    todayGetMinutes = today.getMinutes().toString()
+    let dateToday = `${todayGetDate}/${todayGetMonth}/${todayGetFullYear} à ${todayGetHours}:${todayGetMinutes}`
     const ad = new Ad({
         name : req.body.name,
         category : req.body.category,

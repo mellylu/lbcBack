@@ -42,6 +42,7 @@ const adSchema = new Schema({
     },
     country:{
         type: String,
+        required: true,
     },
     image: {
         type: String,
