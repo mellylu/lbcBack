@@ -168,6 +168,7 @@ exports.getAllFilter = (req, res) => {
                 
             }
         }
+
         if (req.query.material){
             let tabMaterial = req.query.material.split(",")
             if (tabMaterial.length === 1){

@@ -4,25 +4,24 @@ const stripe = Stripe('sk_test_51KHlAcApycYj76sx6fysVoOPR551Ckuu8gRu8S4toPU6Rvu1
 
 const createCheckoutSession = async(req, res) => {
     priceDataArray = [];
-    console.log(req.body)
-    const line_items = req.body.forEach((item) => {
+    const line_items = 
         priceDataArray.push({
             price_data: {
-                currency: "usd",
-                unit_amount: item.price * 100,
+                currency: "eur",
+                unit_amount: req.body.price * 100,
                 product_data: {
-                    name: item.name,
+                    name: req.body.name,
                 },
             },
             quantity:1
         })   
-    })
+    
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: priceDataArray,
         mode: 'payment',
-        success_url: 'http://localhost:3000/Checkoutsuccess',
+        success_url: 'http://localhost:3000/checkoutsuccess',
         cancel_url: 'http://localhost:3000/Cart',
     });
     return session;
@@ -31,7 +30,6 @@ const createCheckoutSession = async(req, res) => {
 exports.createSession = async function (req, res) {
     try {
       const session = await createCheckoutSession(req);
-      console.log(session)
       res.status(200).json({
         id: session.id,
         price: session.amout_total,
