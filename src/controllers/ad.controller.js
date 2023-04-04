@@ -1,5 +1,6 @@
 const { EventListInstance } = require("twilio/lib/rest/api/v2010/account/call/event");
 const Ad = require("../models/ad.model");
+const User = require("../models/user.model");
 
 exports.post = (req, res) => {
     let today = new Date()
@@ -59,16 +60,8 @@ exports.post = (req, res) => {
 //GET ALL
 exports.getAll = (req, res) => {
     Ad.find().then((data)=> {
-        total = data.length / 5 - 1
-        let ad = Ad.find();
-        if (req.query.sort){
-            var sort = { [req.query.sort]: 1 };
-            ad = ad.sort(sort)
-        }
-        if (req.query.page){
-            ad = ad.skip(page * limit).limit(limit)
-        }
-        ad
+        Ad.find()
+        
         .then((data) => {
             res.send({
                 ad : data
@@ -320,8 +313,7 @@ exports.update = (req, res) => {
         image : req.body.image,
         localization: req.body.localization,
         userad: req.body.userad,
-        country: req.body.country,
-        date: Date.now()
+        country: req.body.country
     })
     .then(() => {
         Ad.findById(req.params.id)
@@ -350,15 +342,38 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const ad = Ad.findByIdAndDelete(req.params.id)
     .then(() => {
-        res.send({
-            delete : true
+        User.find().then((data)=>{
+            console.log(data)
+            data.forEach((element)=>{
+                element.favorite = element.favorite.filter(
+                    (el)=>
+                            el.ad._id.toString() !== req.params.id
+                  );
+                  User.findByIdAndUpdate(element._id.toString(), {
+                    favorite: element.favorite,
+                    //password: bcrypt.hashSync(req.body.password, saltRounds),
+                }) .then(() => {
+                    res.send({
+                        delete: true
+                    })
+                })
+                .catch((err) => {
+                    res.status(500).send({
+                        message: err.message || "Some error occured"
+                    })
+                })
+            })
         })
+       
     })
     .catch((err) => {
         res.status(500).send({
             message : err.message || "Some error occured"
         })
     })
+    
+
+
 }
 
 
