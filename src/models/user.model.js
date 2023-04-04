@@ -48,7 +48,8 @@ const userSchema = new Schema({
         {
             category: {type : String},
             search: {type : String},
-            localization: {type: Object}
+            localization: {type: Object},
+            country: {type: String},
         }
     ]
 });

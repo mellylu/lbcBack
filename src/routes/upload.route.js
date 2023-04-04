@@ -7,5 +7,7 @@ var upload = multer()
 router.post('/uploadfile/:folder', upload.single("file"), uploadController.uploadFile);
 router.post('/uploadPhotoUser', upload.single("file"), uploadController.uploadPhotoUser);
 router.delete('/annonces/:id', uploadController.deleteFile);
+router.delete('/users/:id', uploadController.deletePhotoUser);
+
 
 module.exports = router;

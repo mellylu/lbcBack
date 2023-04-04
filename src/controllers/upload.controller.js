@@ -72,3 +72,20 @@ exports.deleteFile = (req, res) => {
         }
     }); 
 }
+
+exports.deletePhotoUser = (req, res) => {
+    cloudinary.api.delete_resources(`users/${req.params.id}`, function(error, result) {
+        if (result){
+            if (result.deleted[`users/${req.params.id}`] === "deleted")
+            {
+                res.status(200).json({message : 'delete ok'})
+            }
+            else{
+                res.status(500).json({error : 'error delete'})
+            }
+        }
+        else{
+            res.status(500).json({error : 'error'})
+        }
+    }); 
+}
