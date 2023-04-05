@@ -151,6 +151,7 @@ exports.update = (req, res) => {
         lastName: req.body.lastName,
         username : req.body.username,
         email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, saltRounds),
         announcement: req.body.announcement,
         favorite: req.body.favorite,
         image: req.body.image,
