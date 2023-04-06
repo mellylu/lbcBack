@@ -146,17 +146,20 @@ exports.getId = (req, res) => {
 
 //UPDATE
 exports.update = (req, res) => {
-    const user = User.findByIdAndUpdate(req.params.id, {
+    console.log(req.body)
+    
+    User.findByIdAndUpdate(req.params.id, {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         username : req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, saltRounds),
+        //password: bcrypt.hashSync(req.body.password, saltRounds),
         announcement: req.body.announcement,
         favorite: req.body.favorite,
         image: req.body.image,
         recentSearch: req.body.recentSearch,
-        //password: bcrypt.hashSync(req.body.password, saltRounds),
+        // password :bcrypt.hashSync(req.body.password, 10)
+        
     })
         .then(() => {
             User.findById(req.params.id)
@@ -188,6 +191,25 @@ exports.update = (req, res) => {
         })
 }
 
+exports.updatepassword = (req, res) => {
+    console.log("AU BON ENDROIT")
+    console.log(req.body.password)
+    console.log(req.params.id)
+    const user = User.findByIdAndUpdate(req.params.id, {
+        password: bcrypt.hashSync(req.body.password, saltRounds)
+    })
+        .then(() => {
+                    res.send({
+                        update: true
+                    })
+                })
+                .catch((err) => {
+                    res.status(500).send({
+                        message: err.message || "Some error occured"
+                    })
+                })
+}
+
 //DELETE
 exports.delete = (req, res) => {
     const user = User.findByIdAndDelete(req.params.id)
@@ -202,6 +224,9 @@ exports.delete = (req, res) => {
             })
         })
 }
+
+
+
 
 //DELETEANNOUNCEMENT
 exports.deleteAnnouncement = (req, res) => {
@@ -295,9 +320,10 @@ exports.verifyphone = (req, res) => {
 //middleware : une fonction que tu places au milieur de deux opérations
 
 
-exports.verifyToken = (req, res) => {  //fonction réutilisable, peut agir en tant que controller
-    let token = req.headers.authorization//récupérer le token qui est dans le header de la requête dans le libellé authorization
-    console.log(token);
+exports.verifyToken = (req, res, next) => {  //fonction réutilisable, peut agir en tant que controller
+    
+        let token = req.headers.authorization//récupérer le token qui est dans le header de la requête dans le libellé authorization
+
     if (!token) { // est ce que on a un token, si il est bon ou pas
         
         return res.status(403).send({
@@ -308,8 +334,9 @@ exports.verifyToken = (req, res) => {  //fonction réutilisable, peut agir en ta
     }
     jwt.verify(token, process.env.JWT_SECRET, //on verifie le token, 1er paramètre : le token, 2ème paramètre la signature
     function(error, jwtdecoded) { //user pas valide / il a expiré, jswtdecoded : infos du jwt qui sont décodées (idadmin et id de l'utilisateur)
-        console.log('testd')
+
         if (error) {
+            next();
             return res.status(401).send({
                 auth : false,
                 token : null,
@@ -325,3 +352,38 @@ exports.verifyToken = (req, res) => {  //fonction réutilisable, peut agir en ta
 })
 }
 
+exports.deleteAnnouncementFavoris = (req, res) => {
+    User.find().then((data)=>{
+            data.forEach((element)=>{
+                // console.log(element.favorite)
+                // console.log(el.ad.toString(), "11")
+                // console.log(req.params.id, "22")
+                element.favorite = element.favorite.filter(
+                    (el)=>
+                            el.ad.toString() !== req.params.id
+                  );
+                  console.log(element._id.toString(), "element._id.toString()")
+                  User.findByIdAndUpdate(element._id.toString(), {
+                    favorite: element.favorite,
+                }) .then(()=>{})
+                .catch((err)=>console.log("erreur", err))
+                // .then(() => {
+                //     res.send({
+                //         delete: true
+                  
+                // })
+                // .catch((err) => {
+                //     res.status(500).send({
+                //         message: err.message || "Some error occured"
+                //     })
+                // })
+           
+        })
+            res.send({
+                        delete: true
+                  
+                })
+
+        })
+ }
+ 

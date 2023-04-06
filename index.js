@@ -7,7 +7,11 @@ const apiRouter = require('./src/routes');
 const cors = require('cors');
 
 var port = process.env.PORT;
+const http = require("http");
 const app = express();
+// const server = http.createServer(app)
+// const socketServ = require("socket.io")
+// const io = socketServ(server)
 
 var uri = process.env.URL;
 
@@ -16,6 +20,14 @@ app.use(bodyParser.json());
 app.use(cors())
 
 app.use('/api/v1/', apiRouter);
+
+// io.on("connection", socket => {
+//     socket.emit("your id", socket.id);
+//     socket.on("send message", body => {
+//         console.log("kk")
+//         io.emit("message", body)
+//     })
+// })
 
 app.listen(port, (err) => {
     if (err) {

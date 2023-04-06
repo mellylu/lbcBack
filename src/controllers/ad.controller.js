@@ -339,38 +339,87 @@ exports.update = (req, res) => {
 }
 
 //DELETE
+// exports.delete = (req, res) => {
+//     const ad = Ad.findByIdAndDelete(req.params.id)
+//     .then(() => {
+//         User.find().then((data)=>{
+//             console.log(data)
+//             data.forEach((element)=>{
+//                 element.favorite = element.favorite.filter(
+//                     (el)=>
+//                             el.ad._id.toString() !== req.params.id
+//                   );
+//                   User.findByIdAndUpdate(element._id.toString(), {
+//                     favorite: element.favorite,
+//                     //password: bcrypt.hashSync(req.body.password, saltRounds),
+//                 }) .then(() => {
+//                     res.send({
+//                         delete: true
+//                     })
+//                 })
+//                 .catch((err) => {
+//                     res.status(500).send({
+//                         message: err.message || "Some error occured"
+//                     })
+//                 })
+//             })
+//         })
+       
+//     })
+//     .catch((err) => {
+//         res.status(500).send({
+//             message : err.message || "Some error occured"
+//         })
+//     })
+    
+
+
+// }
+
 exports.delete = (req, res) => {
     const ad = Ad.findByIdAndDelete(req.params.id)
-    .then(() => {
-        User.find().then((data)=>{
-            console.log(data)
-            data.forEach((element)=>{
-                element.favorite = element.favorite.filter(
-                    (el)=>
-                            el.ad._id.toString() !== req.params.id
-                  );
-                  User.findByIdAndUpdate(element._id.toString(), {
-                    favorite: element.favorite,
-                    //password: bcrypt.hashSync(req.body.password, saltRounds),
-                }) .then(() => {
-                    res.send({
-                        delete: true
-                    })
-                })
-                .catch((err) => {
-                    res.status(500).send({
-                        message: err.message || "Some error occured"
-                    })
-                })
-            })
+    .then((data) => {
+        res.send({
+            delete: true
         })
-       
     })
     .catch((err) => {
         res.status(500).send({
-            message : err.message || "Some error occured"
+            message: err.message || "Some error occured"
         })
     })
+        // User.find().then((data)=>{
+        //     console.log(data)
+        //     data.forEach((element)=>{
+        //         element.favorite = element.favorite.filter(
+        //             (el)=>
+        //                     el.ad._id.toString() !== req.params.id
+        //           );
+        //           User.findByIdAndUpdate(element._id.toString(), {
+        //             favorite: element.favorite,
+        //         }) .then(() => {
+        //             const ad = Ad.findByIdAndDelete(req.params.id)
+        //                 .then((data) => {
+        //                     console.log(data, "data ok")
+        //             res.send({
+        //                 delete: true
+        //             })
+        //             .catch((err) => {
+        //                 res.status(500).send({
+        //                     message : err.message || "Some error occured"
+        //                 })
+        //             })
+        //         })
+        //         .catch((err) => {
+        //             res.status(500).send({
+        //                 message: err.message || "Some error occured"
+        //             })
+        //         })
+        //     })
+        // })
+       
+    // })
+    
     
 
 
